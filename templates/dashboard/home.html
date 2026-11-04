@@ -1,14 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Welcome, {{ user.first_name | default:user.username }}!</h2>
-<ul>
-    <li>Role: {{user.get_role_display}}</li>
-    <li>Course: {{user.course|default:"Not set"}}</li>
-    <li>Members: {{ members_count }}</li>
-    <li>Last Login: {{user.last_login|date:"M d, Y"}}</li>
-</ul>
-{% if is_admin %}
-    <p><a href="{% url 'admin_panel' %}">Open admin panel</a></p>
-{% endif %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h2 class="h3 fw-bold mb-1">Welcome, {{ user.first_name | default:user.username }}!</h2>
+        <p class="text-muted mb-0">Here's a quick look at your account.</p>
+    </div>
+    {% if is_admin %}
+        <a class="btn btn-primary" href="{% url 'admin_panel' %}">Open admin panel</a>
+    {% endif %}
+</div>
+<div class="row g-3">
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body">
+        <div class="stat-label">Role</div><div class="fs-5 fw-semibold">{{user.get_role_display}}</div>
+    </div></div></div>
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body">
+        <div class="stat-label">Course</div><div class="fs-5 fw-semibold">{{user.course|default:"Not set"}}</div>
+    </div></div></div>
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body">
+        <div class="stat-label">Members</div><div class="fs-5 fw-semibold">{{ members_count }}</div>
+    </div></div></div>
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body">
+        <div class="stat-label">Last Login</div><div class="fs-5 fw-semibold">{{user.last_login|date:"M d, Y"}}</div>
+    </div></div></div>
+</div>
 {% endblock %}

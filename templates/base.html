@@ -1,25 +1,71 @@
 <!DOCTYPE html>
-<html>
-<head><title>{% block title %}Campus Connect{% endblock %}</title></head>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Campus Connect{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        /* Orange theme */
+        :root {
+            --bs-primary: #fd7e14; --bs-primary-rgb: 253, 126, 20;
+            --bs-link-color: #fd7e14; --bs-link-color-rgb: 253, 126, 20;
+            --bs-link-hover-color: #ca6510; --bs-link-hover-color-rgb: 202, 101, 16;
+            --bs-body-bg: #faf8f6;
+        }
+        .btn-primary {
+            --bs-btn-bg: #fd7e14; --bs-btn-border-color: #fd7e14;
+            --bs-btn-hover-bg: #e3710f; --bs-btn-hover-border-color: #e3710f;
+            --bs-btn-active-bg: #ca6510; --bs-btn-active-border-color: #ca6510;
+        }
+        .btn-outline-primary {
+            --bs-btn-color: #fd7e14; --bs-btn-border-color: #fd7e14;
+            --bs-btn-hover-bg: #fd7e14; --bs-btn-hover-border-color: #fd7e14;
+            --bs-btn-active-bg: #ca6510; --bs-btn-active-border-color: #ca6510;
+        }
+        .navbar-brand { color: #fd7e14; font-weight: 700; letter-spacing: -.02em; }
+        .card { border: 0; border-radius: 1rem; box-shadow: 0 2px 12px rgba(0, 0, 0, .06); }
+        .stat-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--bs-secondary-color); }
+
+        /* Give Django's default form.as_p inputs the Bootstrap form-control look */
+        form p { margin-bottom: 1rem; }
+        form p label { display: block; margin-bottom: .35rem; font-weight: 500; font-size: .9rem; }
+        form p input:not([type=checkbox]) {
+            display: block; width: 100%; padding: .55rem .8rem; background: #fff;
+            border: 1px solid var(--bs-border-color); border-radius: .6rem;
+            transition: border-color .15s, box-shadow .15s;
+        }
+        form p input:focus { outline: none; border-color: #fd7e14; box-shadow: 0 0 0 .25rem rgba(253, 126, 20, .2); }
+        form .helptext, form ul:not(.errorlist) { display: block; margin-top: .35rem; font-size: .8rem; color: var(--bs-secondary-color); }
+        form .errorlist { list-style: none; padding: 0; margin: 0 0 .35rem; font-size: .85rem; color: var(--bs-danger); }
+    </style>
+</head>
 <body>
-    <nav>
-    {% if user.is_authenticated %}
-        Hi, {{user.username}}!
-        <a href="{% url 'profile' %}">Profile</a>
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
-    {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Sign Up</a>
-    {% endif %}
+    <nav class="navbar bg-white shadow-sm mb-5">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">Campus Connect</a>
+            <div class="d-flex align-items-center gap-2">
+            {% if user.is_authenticated %}
+                <span class="text-muted small d-none d-sm-inline me-1">Hi, {{user.username}}!</span>
+                <a class="btn btn-sm btn-light" href="{% url 'profile' %}">Profile</a>
+                <form method="post" action="{% url 'logout' %}" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Logout</button>
+                </form>
+            {% else %}
+                <a class="btn btn-sm btn-light" href="{% url 'login' %}">Login</a>
+                <a class="btn btn-sm btn-primary" href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
+            </div>
+        </div>
     </nav>
-    {% for message in messages %}
-        <p>{{ message }}</p>
-    {% endfor %}
-    <header>{% block header %}{% endblock %}</header>
-    <main>{% block content %}{% endblock %}</main>
-    <footer>{% block footer %}{% endblock %}</footer>
+    <div class="container">
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} border-0 shadow-sm mx-auto" style="max-width: 520px;">{{ message }}</div>
+        {% endfor %}
+        <header>{% block header %}{% endblock %}</header>
+        <main>{% block content %}{% endblock %}</main>
+        <footer class="text-center text-muted small py-5">{% block footer %}{% endblock %}</footer>
+    </div>
 </body>
 </html>
