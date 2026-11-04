@@ -15,6 +15,9 @@
         <a href="{% url 'signup' %}">Sign Up</a>
     {% endif %}
     </nav>
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
     <header>{% block header %}{% endblock %}</header>
     <main>{% block content %}{% endblock %}</main>
     <footer>{% block footer %}{% endblock %}</footer>
