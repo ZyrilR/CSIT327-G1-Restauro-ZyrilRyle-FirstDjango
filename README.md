@@ -16,16 +16,17 @@ Campus Connect is a Django application with account registration, login, a dashb
 2. Create and activate a virtual environment:
 
    ```powershell
-   py -m venv .venv
-   .\.venv\Scripts\Activate.ps1
+   python -m venv .venv
+   .\.venv\Scripts\activate
    ```
 
    On macOS or Linux, use `python3 -m venv .venv` and `source .venv/bin/activate`.
 
-3. Install Django:
+3. Install Django and confirm:
 
    ```shell
-   python -m pip install "Django>=6.1,<6.2"
+   pip install django
+   python -m django --version
    ```
 
 4. Apply database migrations. This is needed for a fresh database or after model changes; if your existing database is already migrated, you can skip this step:
